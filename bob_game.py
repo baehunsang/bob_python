@@ -83,6 +83,28 @@ def update_game():
                 block_size['width'], block_size['height']
             ])
 
+    position = now_block.position
+    x = now_block.position["x"]
+    for i in range(0, len(now_block.bricks)):
+        brick = now_block.bricks[i]
+        y = now_block.position['y'] - i
+        pygame.draw.rect(screen, BLOCK_COLORS[brick], [
+            x * (block_size['width'] + 1) + margin['x'],
+            y * (block_size['height'] + 1) + margin['y'],
+            block_size['width'], block_size['height']
+        ])
+
+    for i in range(0, len(next_block.bricks)):
+        brick = next_block.bricks[i]
+        y = next_block.position['y'] - i
+        pygame.draw.rect(screen, BLOCK_COLORS[brick], [
+            11 * (block_size['width'] + 1) + margin['x'],
+            y * (block_size['height'] + 1) + margin['y'],
+            block_size['width'], block_size['height']
+        ])
+
+    pygame.display.update()
+
 
 pygame.init()
 
