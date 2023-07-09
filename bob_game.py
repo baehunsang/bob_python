@@ -26,11 +26,7 @@ SCREEN_SIZE = {
     'height' : 400
 }
 
-def get_initialized_board():
-    board = []
-    for _ in range(0, 20):
-        board.append([0, 0, 0, 0, 0, 0, 0, 0, 0, 0])
-    return board
+
 
 class Block:
     def __init__(self) -> None:
@@ -62,35 +58,61 @@ class Block:
         self.bricks[2] = tmp
 
     
-    
-    
+def get_initialized_board():
+    board = []
+    for _ in range(0, 20):
+        board.append([0, 0, 0, 0, 0, 0, 0, 0, 0, 0])
+    return board
+
+def update_game():
+    block_size = {
+        'width' : screen.get_width() / 13 - 2,
+        'height' : screen.get_height() / 20 - 2
+    }
+    margin = {
+        'x': 10, 'y': 10
+    }
+
+    for y in range(0, len(board)):
+        line = board[y]
+        for x in range(0, len(line)):
+            brick = line[x]
+            pygame.draw.rect(screen, BLOCK_COLORS[brick], [
+                x * (block_size['width'] + 1) + margin['x'],
+                y * (block_size["height"] + 1) + margin['y'],
+                block_size['width'], block_size['height']
+            ])
 
 
-def main():
-    pygame.init()
+pygame.init()
 
-    screen= pygame.display.set_mode((SCREEN_SIZE['width'], SCREEN_SIZE['height']))
-    pygame.display.set_caption("HEXA")
+screen= pygame.display.set_mode((SCREEN_SIZE['width'], SCREEN_SIZE['height']))
+pygame.display.set_caption("HEXA")
 
-    #Initialize Game Object
-    now_block = Block()
-    next_block = Block()
-    board = get_initialized_board()
+#Initialize Game Object
+now_block = Block()
+next_block = Block()
+board = get_initialized_board()
 
-    #Initialize Blocks with random colors
-    now_block.bricks = [
-        random.randint(1, len(BLOCK_COLORS) - 1),
-        random.randint (1, len(BLOCK_COLORS) - 1),
-        random.randint(1, len(BLOCK_COLORS) - 1),
-    ]
-    next_block.init_position()
-    next_block.bricks = [
-        random.randint(1, len(BLOCK_COLORS) - 1),
-        random.randint (1, len(BLOCK_COLORS) - 1),
-        random.randint(1, len(BLOCK_COLORS) - 1),
-    ]
+#Initialize Blocks with random colors
+now_block.bricks = [
+    random.randint(1, len(BLOCK_COLORS) - 1),
+    random.randint (1, len(BLOCK_COLORS) - 1),
+    random.randint(1, len(BLOCK_COLORS) - 1),
+]
+next_block.init_position()
+next_block.bricks = [
+    random.randint(1, len(BLOCK_COLORS) - 1),
+    random.randint (1, len(BLOCK_COLORS) - 1),
+    random.randint(1, len(BLOCK_COLORS) - 1),
+]
 
+#Set game data
+delay = 1000
+level = 0
+score = 0
 
-    pygame.quit()
-if __name__ == '__main__':
-    main()
+while True:
+    update_game()
+
+pygame.quit()
