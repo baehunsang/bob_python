@@ -3,7 +3,7 @@ import pygame
 SCREEN_WIDTH = 1000
 SCREEN_HIEGHT = 800
 
-PADDLE_WIDTH = 200
+PADDLE_WIDTH = 150
 PADDLE_HIEGHT = 30
 
 PADDLE_X_POS = SCREEN_WIDTH // 2 - PADDLE_WIDTH // 2
@@ -17,8 +17,8 @@ BALL_X_POS = SCREEN_WIDTH // 2
 BALL_Y_POS = SCREEN_HIEGHT - PADDLE_HIEGHT - BALL_RADIOUS - 120 
 
 #속도 벡터
-BALL_TO_X = -5
-BALL_TO_Y = -5
+BALL_TO_X = -8
+BALL_TO_Y = -7
 
 
 BRICK_WIDTH = SCREEN_WIDTH // 14 - 10
@@ -174,11 +174,20 @@ class Game():
             self.ball.draw_ball_into(self.screen)
             self.bricks.draw_brick_into(self.screen)
             self.paddle.draw_paddle_into(self.screen)
-            
-            if self.ball.is_game_over():
-                self.is_game_running = False
-            pygame.display.update()
             self.manage_game_end_condition()
+            if self.ball.is_game_over():
+                font = pygame.font.SysFont(None, 100)  
+                text = font.render("GAME OVER...", True, (255, 255, 255)) 
+                text_width = text.get_rect().size[0]  
+                text_height = text.get_rect().size[1]
+                text_x_pos = SCREEN_WIDTH // 2 - text_width // 2 
+                text_y_pos = SCREEN_HIEGHT // 2 - text_height // 2
+                self.screen.blit(text, (text_x_pos, text_y_pos))
+                pygame.display.update()
+                pygame.time.delay(1000)
+                self.is_game_running = False
+                continue
+            pygame.display.update()
 
     def manage_event(self):
         for event in pygame.event.get():
@@ -212,7 +221,6 @@ class Game():
             for row in range(ROW):
                 if(self.bricks.get_bricks(colmn,row)):
                     return
-        
         font = pygame.font.SysFont(None, 100)  
         text = font.render("GAME CLEAR!!", True, (255, 255, 255)) 
         text_width = text.get_rect().size[0]  
